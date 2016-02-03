@@ -40,16 +40,38 @@ int exit_dsh()
 // Usage 2: cd <relative_path>
 int cd( char* path )
 {
+    printf( "path changin here!\n" );
+//    printf( "%s\n", path );
+    //chdir( path );
+    const char* path1 = "/home/student/1959287/";
+    chdir( path1 );
     return 1;
 }
 
 // Print the current working directory (the path from /)
 int pwd()
 {
+    // get the current working directory
     char* cwd;
-    //getcwd( cwd, 50 );
     cwd = get_current_dir_name();
+    
+    // print to console
     printf( "%s\n", cwd );
+
+    return 1;
+}
+
+// Print the manual for dsh
+int man()
+{
+    printf( "%s\n", "cmdnm <pid> - return the name that started the process for the given id" );
+    printf( "%s\n", "signal <signam_num> <pid> - send a signal to a process" );
+    printf( "%s\n", "systat - print out some process information using /proc/* files" );
+    //print the other stuff here//
+    printf( "%s\n", "exit - exit the program" );
+    printf( "%s\n", "cd <path> - change directory" );
+    printf( "%s\n", "pwd - print the current working directory" );
+
     return 1;
 }
 
@@ -60,7 +82,7 @@ int dsh( char* line )
     // string to hold each token
     char* token = NULL;
     // array to hold the tokens
-    char* tokens[] = {0};
+    char* tokens[64];
     int i = 0;
 
     // extract the first word
@@ -81,8 +103,7 @@ int dsh( char* line )
     // if there are more parameters than needed, it will ignore the excess
     char* command = tokens[0];
     int return_val = 1;
-    size_t num_params = sizeof( tokens ) / sizeof( tokens[0] );
-    printf( "%d\n", num_params );
+    int num_params = i;
     if( strcmp( command, "cmdnm" ) == 0 )
     {
         printf( "%s\n", "cmdn" );
@@ -93,7 +114,7 @@ int dsh( char* line )
         }
         else
         {
-            printf( "%s", "Usage: cmdnm <pid>" );
+            printf( "%s\n", "Usage: cmdnm <pid>" );
             return_val = 1;
         }
     }
@@ -107,7 +128,7 @@ int dsh( char* line )
         }
         else
         {
-            printf( "%s", "Usage: signal <signam_num> <pid>" );
+            printf( "%s\n", "Usage: signal <signam_num> <pid>" );
             return_val = 1;
         }
     }
@@ -131,7 +152,7 @@ int dsh( char* line )
         }
         else
         {
-            printf( "%s", "Usage: cd <absolute_path>|<relative_path>" );
+            printf( "%s\n", "Usage: cd <absolute_path>|<relative_path>" );
         }
     }
     else if( strcmp( command, "pwd" ) == 0 )
@@ -139,7 +160,10 @@ int dsh( char* line )
         printf( "%s\n", "pwd" );
         return_val = pwd();
     }
-
+    else if( strcmp( command, "man" ) == 0 )
+    {
+        return_val = man();
+    }
     return return_val;
 }
 
@@ -170,9 +194,6 @@ int main( int argc, char** argv )
         // call the dsh function
         flag = dsh( line );   
     }
-
-    ///
-    printf( "%s\n", "goodbye" );
 
     return 1;
 }
