@@ -1,9 +1,9 @@
 # Makefile
-# Makefile for CSC300 Data Structures PA1 Paint Program
+# Makefile for CSC456 Prog 1: Diognostic Shell
 
-# Author:
-# Class: CSC300 Data Structures
-# Date: Fall 2015
+# Author: Christine Sorensen
+# Class: CSC456: Operating Systems
+# Date: Spring 2016
 
 # Usage: make target1 target2 ...
 

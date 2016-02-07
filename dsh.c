@@ -3,7 +3,36 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 
+/************************
+ * To do: 
+ *          change to lowercase
+ *      cmdn
+ *      signal
+ *      syscat
+ *
+ */
+
+/*int toLowerCase( char* &token )
+{
+    int i = 0;
+    char c;
+    printf( "%s: %s\n", "Printing Lower:", token );
+
+    while( token[i] )
+    {
+        c = token[i];
+        putchar( tolower( c ) );
+        i++;
+    }
+
+    printf( "After: %s\n", token );
+
+    return 0;
+}*/
+
+/////////********IN PROGRESS*******///////////
 // Return the command string (name) that started the process
 // for a given id
 // Usage: cmdnm <pid>
@@ -12,6 +41,7 @@ int cmdnm( int pid )
     return 1;
 }
 
+///********IN PROGRESS**********//////////
 // Send a signal to a process
 // Usage: signal <signal_num> <pid>
 int signal( int signal_num, int pid )
@@ -19,6 +49,7 @@ int signal( int signal_num, int pid )
     return 1;
 }
 
+////**********IN PROGRESS*******/////////
 // Print out some process information using /proc/* files
 // Print (to stdout) Linux version and system uptime
 // Print memory usage information: memtotal and memfree
@@ -40,11 +71,18 @@ int exit_dsh()
 // Usage 2: cd <relative_path>
 int cd( char* path )
 {
-    printf( "path changin here!\n" );
-//    printf( "%s\n", path );
-    //chdir( path );
-    const char* path1 = "/home/student/1959287/";
-    chdir( path1 );
+    int success;
+
+    // change to the directory given
+    success = chdir( (const char*) path );
+    
+    // Invalid path or unsuccessful change
+    if( success == -1 )
+    {
+        // Print an error message
+        printf( "%s\n", "Unsuccessful command. (Hint: Did you enter a valid path?)" );
+    }
+    
     return 1;
 }
 
@@ -67,7 +105,7 @@ int man()
     printf( "%s\n", "cmdnm <pid> - return the name that started the process for the given id" );
     printf( "%s\n", "signal <signam_num> <pid> - send a signal to a process" );
     printf( "%s\n", "systat - print out some process information using /proc/* files" );
-    //print the other stuff here//
+    /////print the other stuff here//
     printf( "%s\n", "exit - exit the program" );
     printf( "%s\n", "cd <path> - change directory" );
     printf( "%s\n", "pwd - print the current working directory" );
@@ -77,23 +115,23 @@ int man()
 
 int dsh( char* line )
 {
-    // space to tokenize
-    const char space[2] = " ";
+    // delimiters, split at spaces and tabs
+    const char delim[3] = " \t";
     // string to hold each token
     char* token = NULL;
     // array to hold the tokens
     char* tokens[64];
     int i = 0;
-
     // extract the first word
-    token = strtok( line, space );
+    token = strtok( line, delim );
     
     // collect the words
     while( token != NULL )
     {
-        // store each into the array
+        // add to list of tokens
         tokens[i] = token;
         i++;
+
         // get the next word
         token = strtok( NULL, space );
     }
@@ -139,12 +177,10 @@ int dsh( char* line )
     }
     else if( strcmp( command, "exit" ) == 0 )
     {
-        printf( "%s\n", "exit" );
         return_val = exit_dsh();
     }
     else if( strcmp( command, "cd" ) == 0 )
     {
-        printf( "%s\n", "cd" );
         // pass in path
         if( num_params >= 2 )
         {
@@ -157,13 +193,13 @@ int dsh( char* line )
     }
     else if( strcmp( command, "pwd" ) == 0 )
     {
-        printf( "%s\n", "pwd" );
         return_val = pwd();
     }
     else if( strcmp( command, "man" ) == 0 )
     {
         return_val = man();
     }
+
     return return_val;
 }
 

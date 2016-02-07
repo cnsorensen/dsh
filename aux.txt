@@ -1,0 +1,208 @@
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0 191500  5692 ?        Ss   Feb06   0:01 /usr/lib/systemd/systemd --switched-root --system --deserialize 21
+root         2  0.0  0.0      0     0 ?        S    Feb06   0:00 [kthreadd]
+root         3  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/0]
+root         5  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/0:0H]
+root         7  0.0  0.0      0     0 ?        S    Feb06   0:10 [rcu_sched]
+root         8  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcu_bh]
+root         9  0.0  0.0      0     0 ?        S    Feb06   0:07 [rcuos/0]
+root        10  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/0]
+root        11  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/0]
+root        12  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/0]
+root        13  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/1]
+root        14  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/1]
+root        15  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/1]
+root        17  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/1:0H]
+root        18  0.0  0.0      0     0 ?        S    Feb06   0:01 [rcuos/1]
+root        19  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/1]
+root        20  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/2]
+root        21  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/2]
+root        22  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/2]
+root        24  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/2:0H]
+root        25  0.0  0.0      0     0 ?        S    Feb06   0:04 [rcuos/2]
+root        26  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/2]
+root        27  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/3]
+root        28  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/3]
+root        29  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/3]
+root        31  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/3:0H]
+root        32  0.0  0.0      0     0 ?        S    Feb06   0:01 [rcuos/3]
+root        33  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/3]
+root        34  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/4]
+root        35  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/4]
+root        36  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/4]
+root        38  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/4:0H]
+root        39  0.0  0.0      0     0 ?        S    Feb06   0:01 [rcuos/4]
+root        40  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/4]
+root        41  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/5]
+root        42  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/5]
+root        43  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/5]
+root        45  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/5:0H]
+root        46  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuos/5]
+root        47  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/5]
+root        48  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/6]
+root        49  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/6]
+root        50  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/6]
+root        52  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/6:0H]
+root        53  0.0  0.0      0     0 ?        S    Feb06   0:01 [rcuos/6]
+root        54  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/6]
+root        55  0.0  0.0      0     0 ?        S    Feb06   0:00 [watchdog/7]
+root        56  0.0  0.0      0     0 ?        S    Feb06   0:00 [migration/7]
+root        57  0.0  0.0      0     0 ?        S    Feb06   0:00 [ksoftirqd/7]
+root        59  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/7:0H]
+root        60  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuos/7]
+root        61  0.0  0.0      0     0 ?        S    Feb06   0:00 [rcuob/7]
+root        62  0.0  0.0      0     0 ?        S<   Feb06   0:00 [khelper]
+root        63  0.0  0.0      0     0 ?        S    Feb06   0:00 [kdevtmpfs]
+root        64  0.0  0.0      0     0 ?        S<   Feb06   0:00 [netns]
+root        65  0.0  0.0      0     0 ?        S<   Feb06   0:00 [perf]
+root        66  0.0  0.0      0     0 ?        S<   Feb06   0:00 [writeback]
+root        67  0.0  0.0      0     0 ?        SN   Feb06   0:00 [ksmd]
+root        68  0.0  0.0      0     0 ?        SN   Feb06   0:00 [khugepaged]
+root        69  0.0  0.0      0     0 ?        S<   Feb06   0:00 [crypto]
+root        70  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kintegrityd]
+root        71  0.0  0.0      0     0 ?        S<   Feb06   0:00 [bioset]
+root        72  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kblockd]
+root        73  0.0  0.0      0     0 ?        S<   Feb06   0:00 [ata_sff]
+root        74  0.0  0.0      0     0 ?        S<   Feb06   0:00 [md]
+root        75  0.0  0.0      0     0 ?        S<   Feb06   0:00 [devfreq_wq]
+root        79  0.0  0.0      0     0 ?        S    Feb06   0:00 [kswapd0]
+root        80  0.0  0.0      0     0 ?        S    Feb06   0:00 [fsnotify_mark]
+root       123  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kthrotld]
+root       124  0.0  0.0      0     0 ?        S<   Feb06   0:00 [acpi_thermal_pm]
+root       125  0.0  0.0      0     0 ?        S    Feb06   0:00 [scsi_eh_0]
+root       126  0.0  0.0      0     0 ?        S<   Feb06   0:00 [scsi_tmf_0]
+root       127  0.0  0.0      0     0 ?        S    Feb06   0:00 [scsi_eh_1]
+root       128  0.0  0.0      0     0 ?        S<   Feb06   0:00 [scsi_tmf_1]
+root       129  0.0  0.0      0     0 ?        S    Feb06   0:00 [scsi_eh_2]
+root       130  0.0  0.0      0     0 ?        S<   Feb06   0:00 [scsi_tmf_2]
+root       131  0.0  0.0      0     0 ?        S    Feb06   0:00 [scsi_eh_3]
+root       132  0.0  0.0      0     0 ?        S<   Feb06   0:00 [scsi_tmf_3]
+root       133  0.0  0.0      0     0 ?        S    Feb06   0:00 [scsi_eh_4]
+root       134  0.0  0.0      0     0 ?        S<   Feb06   0:00 [scsi_tmf_4]
+root       135  0.0  0.0      0     0 ?        S    Feb06   0:00 [scsi_eh_5]
+root       136  0.0  0.0      0     0 ?        S<   Feb06   0:00 [scsi_tmf_5]
+root       143  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kpsmoused]
+root       145  0.0  0.0      0     0 ?        S<   Feb06   0:00 [dm_bufio_cache]
+root       146  0.0  0.0      0     0 ?        S<   Feb06   0:00 [ipv6_addrconf]
+root       186  0.0  0.0      0     0 ?        S<   Feb06   0:00 [deferwq]
+root       228  0.0  0.0      0     0 ?        S    Feb06   0:00 [kauditd]
+root       387  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/5:2]
+root       390  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/4:1H]
+root       391  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/0:1H]
+root       392  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/6:1H]
+root       393  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/5:1H]
+root       394  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/7:1H]
+root       395  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/3:1H]
+root       408  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/2:1H]
+root       414  0.0  0.0      0     0 ?        S<   Feb06   0:00 [kworker/1:1H]
+root       428  0.0  0.0      0     0 ?        S    Feb06   0:00 [jbd2/sda2-8]
+root       429  0.0  0.0      0     0 ?        S<   Feb06   0:00 [ext4-rsv-conver]
+root       516  0.0  0.1  62480 23968 ?        Ss   Feb06   0:01 /usr/lib/systemd/systemd-journald
+root       542  0.0  0.0 118532  2880 ?        Ss   Feb06   0:00 /usr/sbin/lvmetad -f
+root       557  0.0  0.0      0     0 ?        S<   Feb06   0:00 [rpciod]
+root       560  0.0  0.0  44528  4400 ?        Ss   Feb06   0:00 /usr/lib/systemd/systemd-udevd
+root       609  0.0  0.0      0     0 ?        S    Feb06   0:00 [irq/29-mei_me]
+root       616  0.0  0.0      0     0 ?        S<   Feb06   0:00 [led_workqueue]
+root       664  0.0  0.0      0     0 ?        S    Feb06   0:00 [jbd2/sda1-8]
+root       665  0.0  0.0      0     0 ?        S<   Feb06   0:00 [ext4-rsv-conver]
+root       682  0.0  0.0  49068  3160 ?        S<sl Feb06   0:00 /sbin/auditd -n
+root       691  0.0  0.0  16784  2684 ?        SNs  Feb06   0:00 /usr/sbin/alsactl -s -n 19 -c -E ALSA_CONFIG_PATH=/etc/alsa/alsactl.conf --initfile=/lib/alsa/init/00main rdaemon
+root       692  0.0  0.0  24980  4056 ?        Ss   Feb06   0:00 /usr/sbin/smartd -n -q never
+root       693  0.0  0.0 338936  8480 ?        Ssl  Feb06   0:00 /usr/sbin/ModemManager
+root       694  0.0  0.0  28568  3148 ?        Ss   Feb06   0:00 /usr/lib/systemd/systemd-logind
+rtkit      696  0.0  0.0 164636  2324 ?        SNsl Feb06   0:01 /usr/libexec/rtkit-daemon
+root       698  0.0  0.4 1608536 68672 ?       Ss   Feb06   0:00 /usr/sbin/syslog-ng -F -p /var/run/syslogd.pid
+root       699  0.0  0.0 394584  8008 ?        Ssl  Feb06   0:01 /usr/libexec/accounts-daemon
+root       700  0.0  0.0   4376  1376 ?        Ss   Feb06   0:03 /sbin/rngd -f
+root       714  0.0  0.0 217572 15348 ?        Ss   Feb06   0:00 /usr/bin/python2 /usr/bin/denyhosts.py --foreground --unlock --config=/etc/denyhosts.conf
+root       715  0.0  0.0 356780  8296 ?        Ssl  Feb06   0:00 /usr/sbin/abrtd -d -s
+dbus       716  0.0  0.0  60416  5908 ?        Ss   Feb06   0:02 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+chrony     722  0.0  0.0 120360  4076 ?        S    Feb06   0:00 /usr/sbin/chronyd
+root       727  0.0  0.0  80224  1728 ?        S<sl Feb06   0:00 /sbin/audispd
+root       729  0.0  0.0  21988  2112 ?        S<   Feb06   0:00 /usr/sbin/sedispatch
+root       741  0.0  0.0 203364  3344 ?        Ssl  Feb06   0:00 /usr/sbin/gssproxy -D
+root       756  0.0  0.1 1495488 29476 ?       Ss   Feb06   0:00 /usr/bin/abrt-dump-journal-oops -fxtD
+avahi      758  0.0  0.0  32340  2996 ?        Ss   Feb06   0:00 avahi-daemon: running [linux07.local]
+root       759  0.0  0.0  17080  2636 ?        Ss   Feb06   0:06 /usr/sbin/irqbalance --foreground
+root       766  0.0  0.0   6500  1876 ?        Ss   Feb06   0:00 /usr/sbin/mcelog --ignorenodev --daemon --foreground
+root       776  0.0  0.0 525872 12804 ?        Ssl  Feb06   0:01 /usr/sbin/NetworkManager --no-daemon
+root       777  0.0  0.0   7508  1152 ?        Ss   Feb06   0:02 /usr/sbin/gpm -m /dev/input/mice -t exps2
+rpc        780  0.0  0.0  65580  3700 ?        Ss   Feb06   0:00 /sbin/rpcbind -w
+avahi      788  0.0  0.0  32216   252 ?        S    Feb06   0:00 avahi-daemon: chroot helper
+polkitd    793  0.0  0.1 540196 18484 ?        Ssl  Feb06   0:02 /usr/lib/polkit-1/polkitd --no-debug
+root       802  0.0  0.0  51352  3980 ?        Ss   Feb06   0:00 /usr/sbin/wpa_supplicant -c /etc/wpa_supplicant/wpa_supplicant.conf -u -f /var/log/wpa_supplicant.log -P /var/run/wpa_supplicant.pid
+root       803  0.0  0.1 120568 19796 ?        S    Feb06   0:00 /sbin/dhclient -d -q -sf /usr/libexec/nm-dhcp-helper -pf /var/run/dhclient-eno1.pid -lf /var/lib/NetworkManager/dhclient-5c826923-0fc5-4aaf-9fb5-9a27f7484161-eno1.lease -cf /var/lib/NetworkManager/dhclient-eno1.conf eno1
+root       953  0.0  0.0      0     0 ?        S<   Feb06   0:00 [cfg80211]
+root      1075  0.0  0.0  80948  6296 ?        Ss   Feb06   0:00 /usr/sbin/sshd -D
+root      1078  0.0  0.1 600636 24040 ?        Ssl  Feb06   0:00 /usr/sbin/libvirtd
+root      1083  0.0  0.0      0     0 ?        S<   Feb06   0:00 [nfsiod]
+root      1100  0.0  0.0 324056  5524 ?        Ssl  Feb06   0:00 /usr/sbin/ypbind -n
+root      1107  0.0  0.1 120568 19800 ?        S    Feb06   0:00 /sbin/dhclient -d -q -6 -N -sf /usr/libexec/nm-dhcp-helper -pf /var/run/dhclient6-eno1.pid -lf /var/lib/NetworkManager/dhclient6-5c826923-0fc5-4aaf-9fb5-9a27f7484161-eno1.lease -cf /var/lib/NetworkManager/dhclient6-eno1.conf eno1
+rpcuser   1116  0.0  0.0  48784  3632 ?        Ss   Feb06   0:00 /usr/sbin/rpc.statd --no-notify
+root      1121  0.0  0.0      0     0 ?        S    Feb06   0:00 [lockd]
+root      1142  0.0  0.0 125780  3120 ?        Ss   Feb06   0:00 /usr/sbin/crond -n
+root      1143  0.0  0.0  23800  2176 ?        Ss   Feb06   0:00 /usr/sbin/atd -f
+root      1144  0.0  0.0 616708  7724 ?        Ssl  Feb06   0:00 /usr/sbin/gdm
+root      1154  0.0  0.0 361356  9960 ?        Sl   Feb06   0:00 gdm-session-worker [pam/gdm-launch-environment]
+gdm       1210  0.0  0.0  44996  4752 ?        Ss   Feb06   0:00 /usr/lib/systemd/systemd --user
+gdm       1211  0.0  0.0  83812  2044 ?        S    Feb06   0:00 (sd-pam)
+gdm       1213  0.0  0.0 309292  5776 tty1     Ssl+ Feb06   0:00 /usr/libexec/gdm-wayland-session /usr/bin/gnome-session --autostart /usr/share/gdm/greeter/autostart  --session gnome-wayland
+gdm       1215  0.0  0.0  58764  4436 tty1     S+   Feb06   0:00 dbus-daemon --print-address 3 --session
+gdm       1216  0.0  0.0 574468 13088 tty1     Sl+  Feb06   0:00 /usr/bin/gnome-session --autostart /usr/share/gdm/greeter/autostart --session gnome-wayland
+gdm       1234  0.0  0.8 1483504 130672 tty1   Sl+  Feb06   0:18 gnome-shell --mode=gdm --wayland --display-server
+root      1275  0.0  0.0 374148 10376 ?        Ssl  Feb06   0:00 /usr/libexec/upowerd
+nobody    1279  0.0  0.0  20516  2536 ?        S    Feb06   0:00 /sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf --leasefile-ro --dhcp-script=/usr/libexec/libvirt_leaseshelper
+root      1280  0.0  0.0  20488   204 ?        S    Feb06   0:00 /sbin/dnsmasq --conf-file=/var/lib/libvirt/dnsmasq/default.conf --leasefile-ro --dhcp-script=/usr/libexec/libvirt_leaseshelper
+gdm       1392  0.0  0.0 320528  6724 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfsd
+gdm       1396  0.0  0.0 305400  6748 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfsd-fuse /run/user/42/gvfs -f -o big_writes
+gdm       1400  0.0  0.2 304380 48512 tty1     Sl+  Feb06   0:00 /usr/bin/Xwayland :1024 -rootless -noreset -listen 4 -listen 5 -displayfd 6
+gdm       1419  0.0  0.0 262184  5572 tty1     Sl+  Feb06   0:00 /usr/libexec/at-spi-bus-launcher
+gdm       1422  0.0  0.0  58388  4116 tty1     S+   Feb06   0:00 /bin/dbus-daemon --config-file=/etc/at-spi2/accessibility.conf --nofork --print-address 3
+gdm       1425  0.0  0.0 125576  5016 tty1     Sl+  Feb06   0:00 /usr/libexec/at-spi2-registryd --use-gnome-session
+gdm       1430  0.0  0.0 601376 10460 ?        S<l  Feb06   0:00 /usr/bin/pulseaudio --start --log-target=syslog
+gdm       1449  0.0  0.0 481928  9820 tty1     Sl   Feb06   0:01 ibus-daemon --xim --panel disable
+gdm       1453  0.0  0.0 404324  7428 tty1     Sl   Feb06   0:00 /usr/libexec/ibus-dconf
+gdm       1455  0.0  0.2 507876 34264 tty1     Sl   Feb06   0:00 /usr/libexec/ibus-x11 --kill-daemon
+root      1464  0.0  0.7 674936 114424 ?       Ssl  Feb06   0:03 /usr/libexec/packagekitd
+gdm       1465  0.0  0.2 1062628 44140 tty1    Sl+  Feb06   0:00 /usr/libexec/gnome-settings-daemon
+gdm       1474  0.0  0.0 412296  8028 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfs-udisks2-volume-monitor
+root      1476  0.0  0.0 371428  7784 ?        Ssl  Feb06   0:17 /usr/libexec/udisks2/udisksd --no-debug
+gdm       1485  0.0  0.0 313232  6040 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfs-goa-volume-monitor
+gdm       1488  0.0  0.1 672704 28956 tty1     Sl+  Feb06   0:03 /usr/libexec/goa-daemon
+gdm       1494  0.0  0.0 322300 11984 tty1     Sl+  Feb06   0:00 /usr/libexec/mission-control-5
+gdm       1497  0.0  0.0 435820  9576 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfs-afc-volume-monitor
+gdm       1504  0.0  0.0 323920  6584 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfs-mtp-volume-monitor
+gdm       1508  0.0  0.0 333012  6996 tty1     Sl+  Feb06   0:00 /usr/libexec/gvfs-gphoto2-volume-monitor
+gdm       1546  0.0  0.0 330648  7460 tty1     Sl   Feb06   0:00 /usr/libexec/ibus-engine-simple
+colord    1607  0.0  0.0 412084 11140 ?        Ssl  Feb06   0:00 /usr/libexec/colord
+root      1617  0.0  0.0 214620  5896 ?        Ssl  Feb06   0:00 /usr/sbin/pcscd --foreground --auto-exit
+root      3202  0.0  0.0 143508  7800 ?        Ss   Feb06   0:00 sshd: jenkins [priv]
+jenkins   3206  0.0  0.0  45000  4776 ?        Ss   Feb06   0:00 /usr/lib/systemd/systemd --user
+jenkins   3211  0.0  0.0 165740  2076 ?        S    Feb06   0:00 (sd-pam)
+jenkins   3221  0.0  0.0 144820  5836 ?        S    Feb06   0:07 sshd: jenkins@notty
+jenkins   3455  0.0  0.0 114852  3136 ?        Ss   Feb06   0:00 bash -c cd "/var/lib/jenkins" && java  -jar slave.jar
+jenkins   3488  0.1  0.9 7856452 147556 ?      Sl   Feb06   2:11 java -jar slave.jar
+root      6422  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/6:1]
+root     11320  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/6:0]
+root     11399  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/7:0]
+root     11547  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/7:2]
+root     11579  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/5:0]
+root     12190  0.0  0.0      0     0 ?        S    Feb06   0:00 [kworker/u16:1]
+root     14420  0.0  0.0      0     0 ?        S    00:52   0:00 [kworker/3:1]
+root     14789  0.0  0.0      0     0 ?        S    03:53   0:01 [kworker/0:1]
+root     14864  0.0  0.0      0     0 ?        S    04:53   0:00 [kworker/4:0]
+root     14937  0.0  0.0      0     0 ?        S    05:54   0:00 [kworker/1:2]
+root     15092  0.0  0.0      0     0 ?        S    06:54   0:00 [kworker/4:1]
+root     15167  0.0  0.0      0     0 ?        S    07:54   0:00 [kworker/1:0]
+root     15370  0.0  0.0      0     0 ?        S    09:37   0:00 [kworker/2:2]
+root     15387  0.0  0.0      0     0 ?        S    09:51   0:00 [kworker/3:0]
+root     15390  0.0  0.0      0     0 ?        S    09:51   0:00 [kworker/2:0]
+root     15402  0.0  0.0      0     0 ?        S    09:55   0:00 [kworker/0:2]
+root     15439  0.0  0.0 143508  7976 ?        Ss   10:15   0:00 sshd: 1959287 [priv]
+1959287  15443  0.0  0.0  49240  4920 ?        Ss   10:15   0:00 /usr/lib/systemd/systemd --user
+1959287  15448  0.0  0.0 231276  2092 ?        S    10:15   0:00 (sd-pam)
+1959287  15454  0.0  0.0 143508  4248 ?        S    10:15   0:00 sshd: 1959287@pts/0
+1959287  15463  0.0  0.0 122912  5352 pts/0    Ss   10:15   0:00 -bash
+root     15726  0.0  0.0      0     0 ?        S    10:32   0:00 [kworker/u16:0]
+root     15735  0.0  0.0      0     0 ?        S    10:38   0:00 [kworker/u16:2]
+1959287  15737  0.0  0.0 158460  4088 pts/0    R+   10:39   0:00 ps aux
