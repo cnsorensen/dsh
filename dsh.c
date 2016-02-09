@@ -7,30 +7,56 @@
 
 /************************
  * To do: 
- *          change to lowercase
+ *      check int to see if greater than 9
  *      cmdn
  *      signal
  *      syscat
- *
  */
 
-/*int toLowerCase( char* &token )
+// Takes a string and converts it to all lowercase
+// Params: string token to be converted
+// Return: string of the token lowercased
+char* toLowerCase( char* token )
 {
     int i = 0;
     char c;
-    printf( "%s: %s\n", "Printing Lower:", token );
 
+    // go through each letter in the string
     while( token[i] )
     {
         c = token[i];
-        putchar( tolower( c ) );
+        token[i] = tolower( c );
         i++;
     }
 
-    printf( "After: %s\n", token );
+    // return the newly lower-cased token
+    return token;
+}
 
-    return 0;
-}*/
+/////////////////IN PROGRESS///////////////////
+// Checks to see if a character is an int by comparing the ascii values
+// is between 48 (0) and 57 (9)
+int isInt( char* num )
+{
+    int i = 0;
+
+    // go through each decimal in the number passed in
+    while( num[i] )
+    {
+        // if it's in the boundaries of an int
+        if( num[i] < 48 || num[i] > 57 )
+        {
+            printf( "%s\n", "Not an int" );
+            return -1;
+        }
+        
+        i++;
+    }
+
+    // else, it's an int
+    printf( "%s is an Int\n", num );
+    return 1;
+}
 
 /////////********IN PROGRESS*******///////////
 // Return the command string (name) that started the process
@@ -46,6 +72,8 @@ int cmdnm( int pid )
 // Usage: signal <signal_num> <pid>
 int signal( int signal_num, int pid )
 {
+    printf( "signum: %d\npid: %d\n", signal_num, pid );
+    //int i = isInt( signal_num );
     return 1;
 }
 
@@ -96,6 +124,8 @@ int pwd()
     // print to console
     printf( "%s\n", cwd );
 
+    free( cwd );
+
     return 1;
 }
 
@@ -117,38 +147,63 @@ int dsh( char* line )
 {
     // delimiters, split at spaces and tabs
     const char delim[3] = " \t";
+    
     // string to hold each token
     char* token = NULL;
+    
     // array to hold the tokens
     char* tokens[64];
     int i = 0;
+    
     // extract the first word
     token = strtok( line, delim );
     
     // collect the words
     while( token != NULL )
     {
-        // add to list of tokens
-        tokens[i] = token;
+        // add to list of tokens after lowercasing them
+        tokens[i] = toLowerCase( token );
         i++;
 
         // get the next word
-        token = strtok( NULL, space );
+        token = strtok( NULL,delim );
     }
+
+    ///////////////ME DEBUGGING PRINT
+    int j;
+    printf( "Print %d tokens\n", i );
+    for( j = 0; j < i; j++ )
+    {
+        printf( "%s\n", tokens[j] );
+    }
+    ///////////////////////////////
 
     // call the appropriate function
     // check for the correct number of parameters
     // if there are more parameters than needed, it will ignore the excess
     char* command = tokens[0];
+    
+    // default to return successful
     int return_val = 1;
+
+    // the number of parameters to check for
     int num_params = i;
     if( strcmp( command, "cmdnm" ) == 0 )
     {
         printf( "%s\n", "cmdn" );
         if( num_params >= 2 )
         {
-            // pass in the pid
-            return_val = cmdnm( tokens[1] );
+            // check to see if pid is an int
+            int flag = isInt( tokens[1] );
+            if( flag != -1 )
+            {
+                // pass in the pid
+                return_val = cmdnm( atoi(tokens[1]) );
+            }
+            else
+            {
+                printf( "%s\n", "Usage: cmdnm <pid> (Hint: Are you passing in a valid pid?)" );
+            }
         }
         else
         {
@@ -162,7 +217,12 @@ int dsh( char* line )
         // pass in the signal number and pic
         if( num_params >= 3 )
         {
-            return_val = signal( tokens[1], tokens[2] );
+            int i1 = isInt( tokens[1] );
+            int i2 = isInt( tokens[2] );
+            if( i1 != -1 && i2 != -1 )
+            {
+                return_val = signal( atoi(tokens[1]), atoi(tokens[2]) );
+            }
         }
         else
         {
