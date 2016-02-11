@@ -4,13 +4,16 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <signal.h>
+#include <sys/types.h>
 
 /************************
  * To do: 
- *      check int to see if greater than 9
+ *      clean out excess printf's
  *      cmdn
- *      signal
- *      syscat
+ *      systat
+ *      execvp() - call whatever function is passed into it
+ *      fork - creates duplicate process
  */
 
 // Takes a string and converts it to all lowercase
@@ -33,12 +36,20 @@ char* toLowerCase( char* token )
     return token;
 }
 
-/////////////////IN PROGRESS///////////////////
 // Checks to see if a character is an int by comparing the ascii values
-// is between 48 (0) and 57 (9)
+// is between 48 (0) and 57 (9). Also checks for negative number
+// Param: char* num - character string to be check if an integer
+// Return: -1 - not an int, 1 - it's an int
 int isInt( char* num )
 {
     int i = 0;
+
+    // if it's a negative number, ignore the - sign
+    if( num[0] == 45 )
+    {
+        i = 1;
+    }
+
 
     // go through each decimal in the number passed in
     while( num[i] )
@@ -46,7 +57,6 @@ int isInt( char* num )
         // if it's in the boundaries of an int
         if( num[i] < 48 || num[i] > 57 )
         {
-            printf( "%s\n", "Not an int" );
             return -1;
         }
         
@@ -54,7 +64,6 @@ int isInt( char* num )
     }
 
     // else, it's an int
-    printf( "%s is an Int\n", num );
     return 1;
 }
 
@@ -67,13 +76,24 @@ int cmdnm( int pid )
     return 1;
 }
 
-///********IN PROGRESS**********//////////
 // Send a signal to a process
 // Usage: signal <signal_num> <pid>
-int signal( int signal_num, int pid )
+// Return: 1, continue while loop
+int dsh_signal( int signal_num, int pid )
 {
     printf( "signum: %d\npid: %d\n", signal_num, pid );
-    //int i = isInt( signal_num );
+    
+    // call the signal
+    // flag is used to determine if kill was successful
+    int flag;
+    flag = killMe( pid, signal_num );
+
+    // bummer dude :(
+    if( flag != 0 )
+    {
+        printf( "%s\n", "Signal failed." );
+    }
+
     return 1;
 }
 
@@ -84,10 +104,154 @@ int signal( int signal_num, int pid )
 // Printn cpu information: vendor id through cache size
 int systat()
 {
+    FILE* fin;
+    char version[256];
+    char uptime[64];
+
+    // open the file containing the version of linux
+    if( ( fin = fopen( "/proc/version", "r" ) ) == NULL )
+    {
+        printf( "%s\n", "Error: cannot open /proc/version" );
+        return 1;
+    }
+    
+    // get the version from the file
+    fgets( version, sizeof( version ), (FILE*)fin );
+
+    // Remove that newline
+    size_t len = strlen( version );
+    if( len > 0 && version[len-1] == '\n' )
+    {
+        version[--len] = '\0';    
+    }
+  
+    // close the version file
+    fclose( fin );
+    
+    // print that sob out!
+    printf( "Linux version: %s\n", version );
+    
+    // open uptime file
+    if( ( fin = fopen( "/proc/uptime", "r" ) ) == NULL )
+    {
+        printf( "%s\n", "Error: cannot open /proc/uptime" );
+        return 1;
+    }
+
+    // get the uptime from the file
+    fgets( uptime, sizeof( uptime ), (FILE*)fin );
+
+    // Remove that newline
+    len = strlen( uptime );
+    if( len > 0 && uptime[len-1] == '\n' )
+    {
+        uptime[--len] = '\0';
+    }
+
+    // close the uptime file
+    fclose( fin );
+
+    // print uptime
+    printf( "System uptime: %s\n", uptime );
+    
+    // print memory usage: memtotal and memfree
+    // found in /proc/meminfo
+    char* memtotal = NULL;
+    char* memfree = NULL;
+    char* line[64];
+    int memFlag = 0;
+    char* label = NULL;
+    char* metric = NULL;
+
+    if( ( fin = fopen( "/proc/meminfo", "r" ) ) == NULL )
+    {
+        printf( "%s\n", "Error: cannot open /proc/meminfo" );
+        return 1;
+    }
+
+    const char delim[3] = " \t";
+
+    // get the entirty of meminfo
+    while( fgets( line, sizeof( line ), (FILE*)fin ) )
+    {
+        //printf( "%s\n", line );
+        label = strtok( line, " \t" );
+        
+        if( strcmp( label, "MemFree:" ) == 0 )
+        {
+            memFlag++;   
+            
+            // extract the value and the metric
+            memfree = strtok( NULL, " \t" );
+            metric = strtok( NULL, " \t" );
+            
+            // gaaahhhhh, take out that newline!!!!
+            len = strlen( metric );
+            if( len > 0 && metric[len-1] == '\n' )
+            {
+                metric[--len] = '\0';
+            }   
+            
+            // Print the memory free to the console
+            printf( "MemFree: %s %s\n", memfree, metric );
+        }
+        else if( strcmp( label, "MemTotal:" ) == 0 )
+        {
+            memFlag++;
+            
+            // grab the value and the metric
+            memtotal = strtok( NULL, " \t" );
+            metric = strtok( NULL, " \t" );
+            
+            // Remove that gd newline at the end of the metric
+            len = strlen( metric );
+            if( len > 0 && metric[len-1] == '\n' )
+            {
+                metric[--len] = '\0';
+            }
+
+            // print out the memory total
+            printf( "MemTotal: %s %s\n", memtotal, metric );
+        }
+        if( memFlag == 2 )
+        {
+            break;
+        }
+    }
+
+    // close the meminfo file
+    fclose( fin );
+
+    // print all of the meminfo (temporary)
+    //printf( "Memory Info: %s\n", meminfo );
+    //MemFree: and MemTotal:
+
+
+
+    // print vendor id through cache size
+    if( ( fin = open( "/proc/cpuinfo", "r" ) ) == NULL )
+    {
+        printf( "%s\n", "Error: cannot open /proc/cpuinfo" );
+        return 1;
+    }
+
+    /*while( fgets( line, sizeof( line ), (FILE*) fin ) )
+    {
+        printf( "%s\n", "green" );
+        printf( "%s\n", line );
+    }*/
+
+    char line2[128];
+
+    fgets( line2, sizeof( line2 ), (FILE*) fin );
+    printf( "%s\n", line2 );
+
+
     return 1;
 }
 
 // Exit the program, program termination
+// Return: 0 - end while loop
 int exit_dsh()
 {
     // zero to end loop
@@ -97,6 +261,8 @@ int exit_dsh()
 // The standard cd command
 // Usage 1: cd <absolute_path>
 // Usage 2: cd <relative_path>
+// Params: char* path - directory to be changed into
+// Return: 1 - continue while loop
 int cd( char* path )
 {
     int success;
@@ -115,6 +281,7 @@ int cd( char* path )
 }
 
 // Print the current working directory (the path from /)
+// Return: 1 - continue while loop
 int pwd()
 {
     // get the current working directory
@@ -129,7 +296,32 @@ int pwd()
     return 1;
 }
 
+// killMe
+// Signals a process
+// 
+// Common signal values:
+//  1 - Hangup
+//  2 - Interrupt from keyboard
+//  9 - KILL SIGNAL MUWHAHAHA
+//  15 - Termination signal
+//  17, 19, 23 - Stop the process
+//
+//  Params: pid - process to signal
+//          signal_num - value to want to send it (see above for common ones)
+//  Return: flag - the response from the kill, 0 for success, -1 for error
+int killMe( int pid, int signal_num )
+{
+    // signal pid. set return to flag to return
+    int flag;
+    flag = kill( pid, signal_num );
+
+    // return the result from the kill process
+    return flag;
+}
+
+////////*********IN PROGRESS*************/////////////////
 // Print the manual for dsh
+// Return: 1 - continue for loop
 int man()
 {
     printf( "%s\n", "cmdnm <pid> - return the name that started the process for the given id" );
@@ -143,6 +335,41 @@ int man()
     return 1;
 }
 
+
+//////////////************IN PROGRESS****************///////////////
+//
+int forkMe( char* args[], int num_params )
+{
+
+    ///////////DEBUGGING REASONS///////////
+    /*
+    for( int i = 0; i < num_params; i++ )
+    {
+        printf( "%s\n", args[i] );
+    }*/
+    ////////////////////////////////
+
+    int pid;
+    pid = fork();
+
+    if( pid == 0 )
+    {
+        execvp( args[0], args ); 
+        exit(0);
+    }
+    else
+    {
+        int waiting;
+        wait( &waiting );
+    }
+
+    return 1;
+}
+
+// dsh
+// Handles the user input
+// Param: char* line - the command the user submitted
+// Return: 1 - continue while loop. 0 - end program
 int dsh( char* line )
 {
     // delimiters, split at spaces and tabs
@@ -170,13 +397,14 @@ int dsh( char* line )
     }
 
     ///////////////ME DEBUGGING PRINT
-    int j;
+/*    int j;
     printf( "Print %d tokens\n", i );
     for( j = 0; j < i; j++ )
     {
         printf( "%s\n", tokens[j] );
     }
     ///////////////////////////////
+*/
 
     // call the appropriate function
     // check for the correct number of parameters
@@ -221,7 +449,7 @@ int dsh( char* line )
             int i2 = isInt( tokens[2] );
             if( i1 != -1 && i2 != -1 )
             {
-                return_val = signal( atoi(tokens[1]), atoi(tokens[2]) );
+                return_val = dsh_signal( atoi(tokens[1]), atoi(tokens[2]) );
             }
         }
         else
@@ -255,9 +483,30 @@ int dsh( char* line )
     {
         return_val = pwd();
     }
+    else if( strcmp( command, "kill" ) == 0 )
+    {
+        printf( "%s\n", "Kill" );
+        if( num_params >= 3 )
+        {
+            int i1 = isInt( tokens[1] );
+            int i2 = isInt( tokens[2] );
+            if( i1 != -1 && i2 != -1 )
+            {
+                return_val = killMe( atoi(tokens[1]), atoi(tokens[2]) );
+            }
+        }
+        else
+        {
+            printf( "%s\n", "Usage: kill <pid> <sig_num>" );
+        }
+    }
     else if( strcmp( command, "man" ) == 0 )
     {
         return_val = man();
+    }
+    else
+    {
+        return_val = forkMe( tokens, num_params );
     }
 
     return return_val;
