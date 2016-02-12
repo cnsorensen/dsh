@@ -1,4 +1,17 @@
 // dsh.c
+// 
+// Program 1: Diagnostic Shell
+// CSC 456 - Operating Systems
+// South Dakota School of Mines and Technology
+// Dr. Jeff S. McGough
+//
+// Author: Christine N. Sorensen
+// 2/12/16
+//
+// Diognostic shell. A process identification program and a simple shell.
+// Purpose: To intoduce unix environment, system calls, signal, the proc
+//          system, harvard commas, and for/exec system calls.
+//
 
 #define _GNU_SOURCE
 #include <unistd.h>
@@ -13,28 +26,19 @@
 #include <sys/wait.h>
 
 // Function prototpyes
+// Extra functions
 char* toLowerCase( char* );
 int isInt( char* );
+
+// dsh commands
 int cmdnm( char* );
 int systat();
 int dsh_exit();
 int cd( char* );
 int pwd();
 int dsh_kill( int, int );
-int man();
 int dsh_fork( char**, int );
-
-/************************
- * To do: 
- *      clean out excess printf's
- *      documentation
- *      error check signal
- *      clean up warnings from compiling
- */
-
-// Remove newline
-// Params: char* line - line to 
-
+int dsh( char* );
 
 // Takes a string and converts it to all lowercase
 // Params: string token to be converted
@@ -89,12 +93,11 @@ int isInt( char* num )
 // Return the command string (name) that started the process
 // for a given id
 // Usage: cmdnm <pid>
-// Return: 1- success, continue looping
-//         -1 - fail. fork it.
+// Return: 1- success, continue looping, -1 - fail. fork it.
 int cmdnm( char* pid )
 {
     FILE* fin;
-    char* filename[32] = {NULL};
+    char filename[32] = {NULL};
 
     // create the filename with the pid
     strcat( filename, "/proc/" );
@@ -275,7 +278,6 @@ int systat()
 
     // count for number of lines needed to print
     int cpuFlag = 0;
-    char* value;
     char linePrint[256];
 
     // delimiter to tokenize the memory info
