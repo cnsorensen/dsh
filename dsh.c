@@ -1,20 +1,40 @@
 // dsh.c
+
+#define _GNU_SOURCE
+#include <unistd.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <ctype.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <fcntl.h>
+#include <sys/wait.h>
+
+// Function prototpyes
+char* toLowerCase( char* );
+int isInt( char* );
+int cmdnm( int );
+int systat();
+int dsh_exit();
+int cd( char* );
+int pwd();
+int dsh_kill( int, int );
+int man();
+int dsh_fork( char**, int );
 
 /************************
  * To do: 
  *      clean out excess printf's
  *      cmdn
  *      systat
- *      execvp() - call whatever function is passed into it
- *      fork - creates duplicate process
+ *      documentation
  */
+
+// Remove newline
+// Params: char* line - line to 
+
 
 // Takes a string and converts it to all lowercase
 // Params: string token to be converted
@@ -73,6 +93,24 @@ int isInt( char* num )
 // Usage: cmdnm <pid>
 int cmdnm( int pid )
 {
+    FILE* fin;
+    char* filename = "/proc/1/cmdline";
+    char cmdnm[128] = {NULL};
+
+    // open the file with the name of the process
+    if( (fin = fopen( filename, "r" ) )  == NULL )
+    {
+        // if it fails
+        return -1;
+    }    
+
+    // grab the pid's name
+    fgets( cmdnm, sizeof( cmdnm ), (FILE*)fin );
+    
+    // print it to the console
+    printf( "%s\n", cmdnm );
+
+    // return to continue loop
     return 1;
 }
 
@@ -80,18 +118,17 @@ int cmdnm( int pid )
 // Usage: signal <signal_num> <pid>
 // Return: 1, continue while loop
 int dsh_signal( int signal_num, int pid )
-{
-    printf( "signum: %d\npid: %d\n", signal_num, pid );
-    
+{   
     // call the signal
     // flag is used to determine if kill was successful
     int flag;
-    flag = killMe( pid, signal_num );
+    flag = dsh_kill( pid, signal_num );
 
     // bummer dude :(
     if( flag != 0 )
     {
         printf( "%s\n", "Signal failed." );
+        return -1;
     }
 
     return 1;
@@ -111,8 +148,7 @@ int systat()
     // open the file containing the version of linux
     if( ( fin = fopen( "/proc/version", "r" ) ) == NULL )
     {
-        printf( "%s\n", "Error: cannot open /proc/version" );
-        return 1;
+        return -1;
     }
     
     // get the version from the file
@@ -134,8 +170,7 @@ int systat()
     // open uptime file
     if( ( fin = fopen( "/proc/uptime", "r" ) ) == NULL )
     {
-        printf( "%s\n", "Error: cannot open /proc/uptime" );
-        return 1;
+        return -1;
     }
 
     // get the uptime from the file
@@ -158,15 +193,14 @@ int systat()
     // found in /proc/meminfo
     char* memtotal = NULL;
     char* memfree = NULL;
-    char* line[64];
+    char* line = NULL;
     int memFlag = 0;
     char* label = NULL;
     char* metric = NULL;
 
     if( ( fin = fopen( "/proc/meminfo", "r" ) ) == NULL )
     {
-        printf( "%s\n", "Error: cannot open /proc/meminfo" );
-        return 1;
+        return -1;
     }
 
     const char delim[3] = " \t";
@@ -174,8 +208,8 @@ int systat()
     // get the entirty of meminfo
     while( fgets( line, sizeof( line ), (FILE*)fin ) )
     {
-        //printf( "%s\n", line );
-        label = strtok( line, " \t" );
+        // extract the labet
+        label = strtok( line, delim );
         
         if( strcmp( label, "MemFree:" ) == 0 )
         {
@@ -229,10 +263,9 @@ int systat()
 
 
     // print vendor id through cache size
-    if( ( fin = open( "/proc/cpuinfo", "r" ) ) == NULL )
+    if( ( fin = fopen( "/proc/cpuinfo", "r" ) ) == NULL )
     {
-        printf( "%s\n", "Error: cannot open /proc/cpuinfo" );
-        return 1;
+        return -11;
     }
 
     /*while( fgets( line, sizeof( line ), (FILE*) fin ) )
@@ -252,7 +285,7 @@ int systat()
 
 // Exit the program, program termination
 // Return: 0 - end while loop
-int exit_dsh()
+int dsh_exit()
 {
     // zero to end loop
     return 0;
@@ -286,8 +319,8 @@ int pwd()
 {
     // get the current working directory
     char* cwd;
-    cwd = get_current_dir_name();
-    
+    cwd = (char*)get_current_dir_name();
+
     // print to console
     printf( "%s\n", cwd );
 
@@ -296,9 +329,7 @@ int pwd()
     return 1;
 }
 
-// killMe
-// Signals a process
-// 
+// Signals a process 
 // Common signal values:
 //  1 - Hangup
 //  2 - Interrupt from keyboard
@@ -309,7 +340,7 @@ int pwd()
 //  Params: pid - process to signal
 //          signal_num - value to want to send it (see above for common ones)
 //  Return: flag - the response from the kill, 0 for success, -1 for error
-int killMe( int pid, int signal_num )
+int dsh_kill( int pid, int signal_num )
 {
     // signal pid. set return to flag to return
     int flag;
@@ -319,26 +350,9 @@ int killMe( int pid, int signal_num )
     return flag;
 }
 
-////////*********IN PROGRESS*************/////////////////
-// Print the manual for dsh
-// Return: 1 - continue for loop
-int man()
-{
-    printf( "%s\n", "cmdnm <pid> - return the name that started the process for the given id" );
-    printf( "%s\n", "signal <signam_num> <pid> - send a signal to a process" );
-    printf( "%s\n", "systat - print out some process information using /proc/* files" );
-    /////print the other stuff here//
-    printf( "%s\n", "exit - exit the program" );
-    printf( "%s\n", "cd <path> - change directory" );
-    printf( "%s\n", "pwd - print the current working directory" );
-
-    return 1;
-}
-
-
 //////////////************IN PROGRESS****************///////////////
 //
-int forkMe( char* args[], int num_params )
+int dsh_fork( char* args[], int num_params )
 {
 
     ///////////DEBUGGING REASONS///////////
@@ -349,14 +363,16 @@ int forkMe( char* args[], int num_params )
     }*/
     ////////////////////////////////
 
-    int pid;
-    pid = fork();
+    int c_pid;
+    c_pid = fork();
 
-    if( pid == 0 )
+    // child process
+    if( c_pid == 0 )
     {
         execvp( args[0], args ); 
         exit(0);
     }
+    // parent process
     else
     {
         int waiting;
@@ -418,7 +434,6 @@ int dsh( char* line )
     int num_params = i;
     if( strcmp( command, "cmdnm" ) == 0 )
     {
-        printf( "%s\n", "cmdn" );
         if( num_params >= 2 )
         {
             // check to see if pid is an int
@@ -430,18 +445,16 @@ int dsh( char* line )
             }
             else
             {
-                printf( "%s\n", "Usage: cmdnm <pid> (Hint: Are you passing in a valid pid?)" );
+                return_val = -1;
             }
         }
         else
         {
-            printf( "%s\n", "Usage: cmdnm <pid>" );
-            return_val = 1;
+            return_val = -1;
         }
     }
     else if( strcmp( command, "signal" ) == 0 )
     {
-        printf( "%s\n", "signal" );
         // pass in the signal number and pic
         if( num_params >= 3 )
         {
@@ -454,18 +467,16 @@ int dsh( char* line )
         }
         else
         {
-            printf( "%s\n", "Usage: signal <signam_num> <pid>" );
-            return_val = 1;
+            return_val = -1;
         }
     }
     else if( strcmp( command, "systat" ) == 0 )
     {
-        printf( "%s\n", "systat" );
         return_val = systat();
     }
     else if( strcmp( command, "exit" ) == 0 )
     {
-        return_val = exit_dsh();
+        return_val = dsh_exit();
     }
     else if( strcmp( command, "cd" ) == 0 )
     {
@@ -476,7 +487,7 @@ int dsh( char* line )
         }
         else
         {
-            printf( "%s\n", "Usage: cd <absolute_path>|<relative_path>" );
+            return_val = -1;
         }
     }
     else if( strcmp( command, "pwd" ) == 0 )
@@ -485,29 +496,33 @@ int dsh( char* line )
     }
     else if( strcmp( command, "kill" ) == 0 )
     {
-        printf( "%s\n", "Kill" );
         if( num_params >= 3 )
         {
             int i1 = isInt( tokens[1] );
             int i2 = isInt( tokens[2] );
             if( i1 != -1 && i2 != -1 )
             {
-                return_val = killMe( atoi(tokens[1]), atoi(tokens[2]) );
+                return_val = dsh_kill( atoi(tokens[1]), atoi(tokens[2]) );
             }
         }
         else
         {
-            printf( "%s\n", "Usage: kill <pid> <sig_num>" );
+            return -1;
         }
-    }
-    else if( strcmp( command, "man" ) == 0 )
-    {
-        return_val = man();
     }
     else
     {
-        return_val = forkMe( tokens, num_params );
+        // it it doesn't match one of the custom commands above,
+        // fork it
+        return_val = dsh_fork( tokens, num_params );
     }
+
+    // if one of the custom commands failed, fork it
+    if( return_val == -1 )
+    {
+        return_val = dsh_fork( tokens, num_params );
+    }
+    
 
     return return_val;
 }
