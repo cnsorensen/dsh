@@ -27,9 +27,9 @@ int dsh_fork( char**, int );
 /************************
  * To do: 
  *      clean out excess printf's
- *      systat
  *      documentation
  *      error check signal
+ *      clean up warnings from compiling
  */
 
 // Remove newline
@@ -70,7 +70,6 @@ int isInt( char* num )
         i = 1;
     }
 
-
     // go through each decimal in the number passed in
     while( num[i] )
     {
@@ -91,7 +90,7 @@ int isInt( char* num )
 // for a given id
 // Usage: cmdnm <pid>
 // Return: 1- success, continue looping
-//          -1 - fail. fork it.
+//         -1 - fail. fork it.
 int cmdnm( char* pid )
 {
     FILE* fin;
@@ -135,17 +134,17 @@ int dsh_signal( int signal_num, int pid )
     return 1;
 }
 
-////**********IN PROGRESS*******/////////
 // Print out some process information using /proc/* files
 // Print (to stdout) Linux version and system uptime
 // Print memory usage information: memtotal and memfree
 // Printn cpu information: vendor id through cache size
+// Return: 1 for continue looping, -1 for an error
 int systat()
 {
     // used for all file opening
     FILE* fin;
 
-    //* linux version *//
+    //** linux version **//
     // found in /proc/version
     char version[256];
 
@@ -171,7 +170,7 @@ int systat()
     // print that sob out!
     printf( "Linux version: %s\n", version );
    
-    //* system uptime *//
+    //** system uptime **//
     // found in /proc/uptime
     char uptime[64];
 
@@ -197,7 +196,7 @@ int systat()
     // print uptime
     printf( "System uptime: %s\n", uptime );
     
-    //* memory usage: memtotal and memfree *//
+    //** memory usage: memtotal and memfree **//
     // found in /proc/meminfo
     char* memtotal = NULL;
     char* memfree = NULL;
@@ -271,7 +270,6 @@ int systat()
     // close the meminfo file
     fclose( fin );
 
-
     //** print vendor id through cache size **//
     // found in /proc/cpu info
 
@@ -301,7 +299,6 @@ int systat()
         // compare the labels
         if( strcmp( label, "vendor_id" ) == 0 )
         {
-            value = strtok( NULL, delim2 );
             printf( "%s", linePrint );
             cpuFlag++;
         }
@@ -309,46 +306,39 @@ int systat()
         {
             if( strcmp( strtok( NULL, delim2 ), "family" ) == 0 ) 
             {
-                value = strtok( NULL, delim2 );
                 printf( "%s", linePrint );
                 cpuFlag++;
             }
         }
-        // model name will short circuit here before seeing the next else-if to
-        // avoid printing a duplicate line
+        // Note here: model name will short circuit here before seeing the next 
+        // else-if to avoid printing a duplicate line with model
         else if( strcmp( label, "model" ) == 0 &&  strcmp( strtok( NULL, delim2 ), "name" ) == 0 )
         {
-            value = strtok( NULL, delim2 );
             printf( "%s", linePrint );
             cpuFlag++;
         }
         else if( strcmp( label, "model" ) == 0 )
         {
-            value = strtok( NULL, delim2 );
             printf( "%s", linePrint );
             cpuFlag++;
         }
         else if( strcmp( label, "stepping" ) == 0 )
         {
-            value = strtok( NULL, delim2 );
             printf( "%s", linePrint );
             cpuFlag++;
         }
         else if( strcmp( label, "microcode" ) == 0 )
         {
-            value = strtok( NULL, delim2 );
             printf( "%s", linePrint );
             cpuFlag++;
         }
         else if( strcmp( label, "cpu" ) == 0 && strcmp( strtok( NULL, delim2 ), "MGz" ) == 0 )
         {
-                value = strtok( NULL, delim2 );
                 printf( "%s", linePrint );
                 cpuFlag++;
         }
         else if( strcmp( label, "cache" ) == 0 && strcmp( strtok( NULL, delim2 ), "size" ) == 0 )
         {
-            value = strtok( NULL, delim2 );
             printf( "%s", linePrint );
             cpuFlag++;
         }
@@ -362,7 +352,6 @@ int systat()
 
     // close the cpuinfo file
     fclose( fin );
-
 
     return 1;
 }
@@ -441,16 +430,7 @@ int dsh_kill( int pid, int signal_num )
 // Params: char* args[] - list of the commands from the user
 // Return: 1 to continue for loop for the program
 int dsh_fork( char* args[], int num_params )
-{
-
-    ///////////DEBUGGING REASONS///////////
-    /*
-    for( int i = 0; i < num_params; i++ )
-    {
-        printf( "%s\n", args[i] );
-    }*/
-    ////////////////////////////////
-    
+{    
     // duplicate the process
     int c_pid;
     c_pid = fork();
@@ -501,16 +481,6 @@ int dsh( char* line )
         // get the next word
         token = strtok( NULL,delim );
     }
-
-    ///////////////ME DEBUGGING PRINT
-/*    int j;
-    printf( "Print %d tokens\n", i );
-    for( j = 0; j < i; j++ )
-    {
-        printf( "%s\n", tokens[j] );
-    }
-    ///////////////////////////////
-*/
 
     // call the appropriate function
     // check for the correct number of parameters
@@ -613,7 +583,7 @@ int dsh( char* line )
         return_val = dsh_fork( tokens, num_params );
     }
     
-
+    // return val determines whether to continue the dsh loop
     return return_val;
 }
 
