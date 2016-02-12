@@ -104,8 +104,6 @@ int cmdnm( char* pid )
     strcat( filename, pid );
     strcat( filename, "/cmdline" );
 
-    //printf( "Filename: %s\n", filename );
-
     // holds the output of the cmdnm file
     char cmdnm[128] = {NULL};
 
@@ -398,8 +396,6 @@ int pwd()
     // print to console
     printf( "%s\n", cwd );
 
-    free( cwd );
-
     return 1;
 }
 
@@ -472,12 +468,12 @@ int dsh( char* line )
     
     // extract the first word
     token = strtok( line, delim );
-    
+
     // collect the words
     while( token != NULL )
     {
-        // add to list of tokens after lowercasing them
-        tokens[i] = toLowerCase( token );
+        // add to list of tokens
+        tokens[i] = token;
         i++;
 
         // get the next word
@@ -487,7 +483,8 @@ int dsh( char* line )
     // call the appropriate function
     // check for the correct number of parameters
     // if there are more parameters than needed, it will ignore the excess
-    char* command = tokens[0];
+    // lowercase the command
+    char* command = toLowerCase( tokens[0] );
     
     // default to return successful
     int return_val = 1;
