@@ -15,7 +15,7 @@
 // Function prototpyes
 char* toLowerCase( char* );
 int isInt( char* );
-int cmdnm( int );
+int cmdnm( char* );
 int systat();
 int dsh_exit();
 int cd( char* );
@@ -27,7 +27,6 @@ int dsh_fork( char**, int );
 /************************
  * To do: 
  *      clean out excess printf's
- *      cmdn
  *      systat
  *      documentation
  */
@@ -87,14 +86,24 @@ int isInt( char* num )
     return 1;
 }
 
-/////////********IN PROGRESS*******///////////
 // Return the command string (name) that started the process
 // for a given id
 // Usage: cmdnm <pid>
-int cmdnm( int pid )
+// Return: 1- success, continue looping
+//          -1 - fail. fork it.
+int cmdnm( char* pid )
 {
     FILE* fin;
-    char* filename = "/proc/1/cmdline";
+    char* filename[32] = {NULL};
+
+    // create the filename with the pid
+    strcat( filename, "/proc/" );
+    strcat( filename, pid );
+    strcat( filename, "/cmdline" );
+
+    //printf( "Filename: %s\n", filename );
+
+    // holds the output of the cmdnm file
     char cmdnm[128] = {NULL};
 
     // open the file with the name of the process
@@ -106,8 +115,8 @@ int cmdnm( int pid )
 
     // grab the pid's name
     fgets( cmdnm, sizeof( cmdnm ), (FILE*)fin );
-    
-    // print it to the console
+
+    // print to output
     printf( "%s\n", cmdnm );
 
     // return to continue loop
@@ -119,17 +128,8 @@ int cmdnm( int pid )
 // Return: 1, continue while loop
 int dsh_signal( int signal_num, int pid )
 {   
-    // call the signal
-    // flag is used to determine if kill was successful
-    int flag;
-    flag = dsh_kill( pid, signal_num );
-
-    // bummer dude :(
-    if( flag != 0 )
-    {
-        printf( "%s\n", "Signal failed." );
-        return -1;
-    }
+    // call the signal using the kill function
+    dsh_kill( pid, signal_num );
 
     return 1;
 }
@@ -200,7 +200,7 @@ int systat()
     // found in /proc/meminfo
     char* memtotal = NULL;
     char* memfree = NULL;
-    char* line = NULL;
+    char line[256];
     int memFlag = 0;
     char* label = NULL;
     char* metric = NULL;
@@ -219,7 +219,7 @@ int systat()
     {
         // extract the label
         label = strtok( line, delim );
-        
+            
         // if it's the memory free information
         if( strcmp( label, "MemFree:" ) == 0 )
         {
@@ -270,7 +270,8 @@ int systat()
     // close the meminfo file
     fclose( fin );
 
-    //* print vendor id through cache size *//
+/*
+    // print vendor id through cache size //
     // found in /proc/cpu info
 
     // open the file
@@ -279,17 +280,17 @@ int systat()
         return -1;
     }
 
-    /*while( fgets( line, sizeof( line ), (FILE*) fin ) )
+    // get entirity of cpuinfo one line at a time
+    while( fgets( line, sizeof( line ), (FILE*) fin ) )
     {
-        printf( "%s\n", "green" );
         printf( "%s\n", line );
-    }*/
+    }
 
-    char line2[128];
+    //char line2[128];
 
-    fgets( line2, sizeof( line2 ), (FILE*) fin );
-    printf( "%s\n", line2 );
-
+    //fgets( line2, sizeof( line2 ), (FILE*) fin );
+    //printf( "%s\n", line2 );
+*/
 
     return 1;
 }
@@ -306,7 +307,7 @@ int dsh_exit()
 // Usage 1: cd <absolute_path>
 // Usage 2: cd <relative_path>
 // Params: char* path - directory to be changed into
-// Return: 1 - continue while loop
+// Return: 1 - continue while loop, -1 for failure
 int cd( char* path )
 {
     int success;
@@ -317,8 +318,7 @@ int cd( char* path )
     // Invalid path or unsuccessful change
     if( success == -1 )
     {
-        // Print an error message
-        printf( "%s\n", "Unsuccessful command. (Hint: Did you enter a valid path?)" );
+        return -1;
     }
     
     return 1;
@@ -459,7 +459,7 @@ int dsh( char* line )
             if( flag != -1 )
             {
                 // pass in the pid
-                return_val = cmdnm( atoi(tokens[1]) );
+                return_val = cmdnm( tokens[1] );
             }
             else
             {

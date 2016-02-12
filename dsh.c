@@ -29,6 +29,7 @@ int dsh_fork( char**, int );
  *      clean out excess printf's
  *      systat
  *      documentation
+ *      error check signal
  */
 
 // Remove newline
@@ -270,11 +271,19 @@ int systat()
     // close the meminfo file
     fclose( fin );
 
-/*
-    // print vendor id through cache size //
+
+    //** print vendor id through cache size **//
     // found in /proc/cpu info
 
-    // open the file
+    // count for number of lines needed to print
+    int cpuFlag = 0;
+    char* value;
+    char linePrint[256];
+
+    // delimiter to tokenize the memory info
+    const char delim2[4] = " \t";
+
+    // open the file with the cpu info
     if( ( fin = fopen( "/proc/cpuinfo", "r" ) ) == NULL )
     {
         return -1;
@@ -283,14 +292,77 @@ int systat()
     // get entirity of cpuinfo one line at a time
     while( fgets( line, sizeof( line ), (FILE*) fin ) )
     {
-        printf( "%s\n", line );
+        // copy the read in line to a variable that will print it
+        strcpy( linePrint, line );
+
+        // extract the label
+        label = strtok( line, delim2 ); 
+
+        // compare the labels
+        if( strcmp( label, "vendor_id" ) == 0 )
+        {
+            value = strtok( NULL, delim2 );
+            printf( "%s", linePrint );
+            cpuFlag++;
+        }
+        else if( strcmp( label, "cpu" ) == 0 )
+        {
+            if( strcmp( strtok( NULL, delim2 ), "family" ) == 0 ) 
+            {
+                value = strtok( NULL, delim2 );
+                printf( "%s", linePrint );
+                cpuFlag++;
+            }
+        }
+        // model name will short circuit here before seeing the next else-if to
+        // avoid printing a duplicate line
+        else if( strcmp( label, "model" ) == 0 &&  strcmp( strtok( NULL, delim2 ), "name" ) == 0 )
+        {
+            value = strtok( NULL, delim2 );
+            printf( "%s", linePrint );
+            cpuFlag++;
+        }
+        else if( strcmp( label, "model" ) == 0 )
+        {
+            value = strtok( NULL, delim2 );
+            printf( "%s", linePrint );
+            cpuFlag++;
+        }
+        else if( strcmp( label, "stepping" ) == 0 )
+        {
+            value = strtok( NULL, delim2 );
+            printf( "%s", linePrint );
+            cpuFlag++;
+        }
+        else if( strcmp( label, "microcode" ) == 0 )
+        {
+            value = strtok( NULL, delim2 );
+            printf( "%s", linePrint );
+            cpuFlag++;
+        }
+        else if( strcmp( label, "cpu" ) == 0 && strcmp( strtok( NULL, delim2 ), "MGz" ) == 0 )
+        {
+                value = strtok( NULL, delim2 );
+                printf( "%s", linePrint );
+                cpuFlag++;
+        }
+        else if( strcmp( label, "cache" ) == 0 && strcmp( strtok( NULL, delim2 ), "size" ) == 0 )
+        {
+            value = strtok( NULL, delim2 );
+            printf( "%s", linePrint );
+            cpuFlag++;
+        }
+
+        // If you have printed all of the needed cpu infos, stop reading from file
+        if( cpuFlag >= 8 )
+        {
+            break;
+        }
     }
 
-    //char line2[128];
+    // close the cpuinfo file
+    fclose( fin );
 
-    //fgets( line2, sizeof( line2 ), (FILE*) fin );
-    //printf( "%s\n", line2 );
-*/
 
     return 1;
 }
