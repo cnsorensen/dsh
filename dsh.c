@@ -13,8 +13,6 @@
 //          system, harvard commas, and for/exec system calls.
 //
 // Bugs:
-//  ls doesn't work on its own
-//  ditto with cat on its own. however, cat works with a file
 //  need to add second installment of the program
 //
 
@@ -102,7 +100,8 @@ int isInt( char* num )
 int cmdnm( char* pid )
 {
     FILE* fin;
-    char filename[32] = {NULL};
+    //char filename[32] = {NULL};
+    char filename[32];
 
     // create the filename with the pid
     strcat( filename, "/proc/" );
@@ -110,7 +109,9 @@ int cmdnm( char* pid )
     strcat( filename, "/cmdline" );
 
     // holds the output of the cmdnm file
-    char cmdnm[128] = {NULL};
+    //char cmdnm[128] = {NULL};
+    char cmdnm[128];
+    
 
     // open the file with the name of the process
     if( (fin = fopen( filename, "r" ) )  == NULL )
@@ -434,16 +435,32 @@ int dsh_kill( int pid, int signal_num )
 // Return: 1 to continue for loop for the program
 int dsh_fork( char* args[], int num_params )
 {    
+    printf( "dsh_forking here\n" );
+
     // duplicate the process
     int c_pid;
+    //pid_t c_pid;
     c_pid = fork();
+
+    // array to hold the arguments
+    char* ironman[num_params + 1];
+
+    // add the null to the end in order for execvp to work
+    int i;
+    for( i = 0; i < num_params; i++ )
+    {
+        ironman[i] = args[i];
+    }
+    ironman[i] = NULL;
+    
 
     // child process
     if( c_pid == 0 )
     {
         // execute the program
-        execvp( args[0], args );
-        // only returns when an erro occurs 
+        execvp( args[0], ironman );
+        // only returns when an erro occurs
+        printf( "printing if error occurs\n" ); 
         exit(0);
     }
     // parent process
