@@ -12,6 +12,11 @@
 // Purpose: To intoduce unix environment, system calls, signal, the proc
 //          system, harvard commas, and for/exec system calls.
 //
+// Bugs:
+//  ls doesn't work on its own
+//  ditto with cat on its own. however, cat works with a file
+//  need to add second installment of the program
+//
 
 #define _GNU_SOURCE
 #include <unistd.h>
