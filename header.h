@@ -20,6 +20,7 @@
 // Extra functions
 char* toLowerCase( char* );
 int isInt( char* );
+char* removeNewLine( char* );
 
 // dsh commands
 int cmdnm( char* );
@@ -35,5 +36,6 @@ int dsh_signal( int, int );
 int dsh_hb( int, int, char* );
 void* p_hb( void* );
 int dsh( char* );
+int splitInstructions( char* );
 
 #endif

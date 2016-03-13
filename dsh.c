@@ -14,22 +14,72 @@
 //
 // Bugs:
 //  need to add second installment of the program
+//      add hb - DONE
+//      pthread it up - DONE
+//      | - DONE
+//      < and >
+//      (( and ))
+//  Clean up some
 //
 
 #include "header.h"
 
+
+// Split the instructions (used in pipelining)
+int splitInstructions( char* line )
+{
+    int return_val = 1;
+
+    const char delim[2] = "|";
+	char* instruction;
+	char* instructions[64];
+
+    // extract the first instruction
+    instruction = strtok( line, delim );
+
+    // collect the instructions
+	int i = 0;
+    while( instruction != NULL )
+    {
+        // add to list of tokens
+        instructions[i] = instruction;
+        i++;
+
+        // get the next word
+        instruction = strtok( NULL, delim );
+    }
+	
+	// go through each instruction
+	int j;
+	for( j = 0; j < i; j++ )
+	{
+        // perform each instruction
+		return_val = dsh( instructions[j] );
+
+		// if an exit was given, exit the program
+		if( return_val == 0 )
+		{
+			return return_val;
+		}		
+	}
+
+	return return_val;
+}
 
 // Handles the user input
 // Param: char* line - the command the user submitted
 // Return: 1 - continue while loop. 0 - end program
 int dsh( char* line )
 {
-    // delimiters, split at spaces and tabs
+    // delimiters
     const char delim[3] = " \t";
-    
+    //const char redirectDelim[3] = "<>";
+    //const char remoteDelim[3] = "()"; 
+
     // string to hold each token
+	// 
     char* token = NULL;
-    
+ 
     // array to hold the tokens
     char* tokens[64];
     int i = 0;
@@ -45,7 +95,7 @@ int dsh( char* line )
         i++;
 
         // get the next word
-        token = strtok( NULL,delim );
+        token = strtok( NULL, delim );
     }
 
     // call the appropriate function
@@ -177,7 +227,7 @@ int main( int argc, char** argv )
     
     // each line read in from the user
     char line[80];
-   
+
     while( flag == 1 )
     {
         // print the shell name
@@ -188,14 +238,10 @@ int main( int argc, char** argv )
 
         // remove that annoying newline character at the end
         // that fgets seems to have necessary to include
-        size_t len = strlen( line );
-        if( len > 0 && line[len-1] == '\n' )
-        {
-            line[--len] = '\0';
-        }
+        char* line2 = removeNewLine( line );
 
-        // call the dsh function
-        flag = dsh( line );   
+        // call the dsh function on the command line
+        flag = splitInstructions( line2 );
     }
 
     return 1;

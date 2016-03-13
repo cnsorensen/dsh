@@ -51,3 +51,15 @@ int isInt( char* num )
     // else, it's an int
     return 1;
 }
+
+char* removeNewLine( char* line )
+{
+    size_t len = strlen( line );
+    
+    if( len > 0 && line[len-1] == '\n' )
+    {
+        line[--len] = '\0';
+    }
+
+    return line;
+}

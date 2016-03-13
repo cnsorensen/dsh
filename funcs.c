@@ -91,8 +91,6 @@ void* p_systat( void* param )
     // used for all file opening
     FILE* fin;
 
-    size_t len;
-
     //** linux version **//
     // found in /proc/version
     char version[256];
@@ -104,17 +102,14 @@ void* p_systat( void* param )
     	fgets( version, sizeof( version ), (FILE*)fin );
 
     	// Remove that newline
-    	len = strlen( version );
-    	if( len > 0 && version[len-1] == '\n' )
-    	{
-        	version[--len] = '\0';    
-    	}
-  
+        char* versionPrint = removeNewLine( version );
+        
+
     	// close the version file
     	fclose( fin );
     
     	// print that sob out!
-    	printf( "Linux version: %s\n", version );
+    	printf( "Linux version: %s\n", versionPrint );
 	}
 
     //** system uptime **//
@@ -128,17 +123,13 @@ void* p_systat( void* param )
 	    fgets( uptime, sizeof( uptime ), (FILE*)fin );
 
 	    // Remove that newline
-	    len = strlen( uptime );
-	    if( len > 0 && uptime[len-1] == '\n' )
-	    {
-	        uptime[--len] = '\0';
-	    }
+        char* uptimePrint = removeNewLine( uptime );
 
 	    // close the uptime file
 	    fclose( fin );
 
 	    // print uptime
-	    printf( "System uptime: %s\n", uptime );
+	    printf( "System uptime: %s\n", uptimePrint );
 	}
     
     //** memory usage: memtotal and memfree **//
@@ -173,14 +164,10 @@ void* p_systat( void* param )
     	        metric = strtok( NULL, " \t" );
     	        
     	        // gaaahhhhh, take out that newline!!!!
-    	        len = strlen( metric );
-    	        if( len > 0 && metric[len-1] == '\n' )
-    	        {
-    	            metric[--len] = '\0';
-    	        }   
-    	        
+    	        char* metricPrint = removeNewLine( metric );        
+
     	        // Print the memory free to the console
-    	        printf( "MemFree: %s %s\n", memfree, metric );
+    	        printf( "MemFree: %s %s\n", memfree, metricPrint );
     	    }
 	
     	    // if it's the memory total information
@@ -193,14 +180,10 @@ void* p_systat( void* param )
     	        metric = strtok( NULL, " \t" );
     	        
     	        // Remove that gd newline at the end of the metric
-    	        len = strlen( metric );
-    	        if( len > 0 && metric[len-1] == '\n' )
-    	        {
-    	            metric[--len] = '\0';
-    	        }
-	
+	            char* metricPrint = removeNewLine( metric );
+
     	        // print out the memory total
-    	        printf( "MemTotal: %s %s\n", memtotal, metric );
+    	        printf( "MemTotal: %s %s\n", memtotal, metricPrint );
     	    }
 	
     	    // stop reading the file once you get the two needed values
