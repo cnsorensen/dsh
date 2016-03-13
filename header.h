@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <time.h>
 
 // Function prototpyes
 // Extra functions
@@ -27,6 +28,8 @@ int cd( char* );
 int pwd();
 int dsh_kill( int, int );
 int dsh_fork( char**, int );
+int dsh_signal( int, int );
+int dsh_hb( int, int, char* );
 int dsh( char* );
 
 #endif

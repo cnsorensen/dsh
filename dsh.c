@@ -105,6 +105,22 @@ int dsh( char* line )
     {
         return_val = dsh_exit();
     }
+    else if( strcmp( command, "hb" ) == 0 )
+    {
+        if( num_params >= 4 )
+        {
+            int i1 = isInt( tokens[1] );
+            int i2 = isInt( tokens[2] );
+            if( i1 != -1 && i2 != -1 )
+            {
+                return_val = dsh_hb( atoi(tokens[1]), atoi(tokens[2]), tokens[3] );    
+            }           
+        }
+        else
+        {
+            return_val = -1;
+        }
+    }
     else if( strcmp( command, "cd" ) == 0 )
     {
         // pass in path

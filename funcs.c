@@ -1,11 +1,11 @@
-
 // dsh_funcs.c
  
 #include "header.h"
 
 // Return the command string (name) that started the process
-// for a given id
+//  for a given id
 // Usage: cmdnm <pid>
+// Params: pid - the process id 
 // Return: 1- success, continue looping, -1 - fail. fork it.
 int cmdnm( char* pid )
 {
@@ -51,10 +51,13 @@ int dsh_signal( int signal_num, int pid )
     return 1;
 }
 
-// Print out some process information using /proc/* files
-// Print (to stdout) Linux version and system uptime
-// Print memory usage information: memtotal and memfree
-// Printn cpu information: vendor id through cache size
+// Print all of the stats of the system
+//  Print out some process information using /proc/* files
+//  Print (to stdout) Linux version and system uptime
+//  Print memory usage information: memtotal and memfree
+//  Printn cpu information: vendor id through cache size
+// Usage: systat
+// Params: nun
 // Return: 1 for continue looping, -1 for an error
 int systat()
 {
@@ -273,6 +276,7 @@ int systat()
 }
 
 // Exit the program, program termination
+// Usage: exit
 // Return: 0 - end while loop
 int dsh_exit()
 {
@@ -302,6 +306,8 @@ int cd( char* path )
 }
 
 // Print the current working directory (the path from /)
+// Usage: pwd
+// Params: nun
 // Return: 1 - continue while loop
 int pwd()
 {
@@ -317,12 +323,12 @@ int pwd()
 
 // Signals a process 
 // Common signal values:
-//  1 - Hangup
-//  2 - Interrupt from keyboard
-//  9 - KILL SIGNAL MUWHAHAHA
-//  15 - Termination signal
-//  17, 19, 23 - Stop the process
-//
+//      1 - Hangup
+//      2 - Interrupt from keyboard
+//      9 - KILL SIGNAL MUWHAHAHA
+//      15 - Termination signal
+//      17, 19, 23 - Stop the process
+//  Usage: kill pid signal_num
 //  Params: pid - process to signal
 //          signal_num - value to want to send it (see above for common ones)
 //  Return: flag - the response from the kill, 0 for success, -1 for error
@@ -337,16 +343,14 @@ int dsh_kill( int pid, int signal_num )
 }
 
 // Uses the fork command to signal the system with a command
-// Layout is similar to Dr. Jeff McGough's code which was taken from
-// "Advanced Linux Programming," by CodeSourcery LLC
-// Copyright (C) 2001 by New Riders Publishing
+//  Layout is similar to Dr. Jeff McGough's code which was taken from
+//  "Advanced Linux Programming," by CodeSourcery LLC
+//  Copyright (C) 2001 by New Riders Publishing
 //
 // Params: char* args[] - list of the commands from the user
 // Return: 1 to continue for loop for the program
 int dsh_fork( char* args[], int num_params )
 {    
-    printf( "dsh_forking here\n" );
-
     // duplicate the process
     int c_pid;
     //pid_t c_pid;
@@ -370,7 +374,7 @@ int dsh_fork( char* args[], int num_params )
         // execute the program
         execvp( args[0], ironman );
         // only returns when an erro occurs
-        printf( "printing if error occurs\n" ); 
+        //printf( "printing if error occurs\n" ); 
         exit(0);
     }
     // parent process
@@ -383,3 +387,68 @@ int dsh_fork( char* args[], int num_params )
     return 1;
 }
 
+// hb - heartbeat 
+//  Print current time loop
+// Usage: hb tinc tend tval
+// Params:
+//  tinc - time increments (intervals)
+//  tend - time to end, how long to run
+//  tval - the units in s, ms for seconds and miliseconds respectively
+// Return: 1 for success, -1 for failure of syntax of the tval
+int dsh_hb( int tinc, int tend, char* tval )
+{
+
+    // in linux, date +"%T" shows the time
+    // date +"%T.%3N" shows milliseconds
+
+    // holds the date command to be called
+    // initializing it to just show the time
+    char* timeArgs[2] = { "date", "+%T" };
+
+    // if the values are in seconds
+    if( strcmp( tval, "s" ) == 0 )
+    {
+        // convert the time increment to microseconds
+        // 1 second == 1000000 microseconds
+        tinc = tinc * 1000000;
+    }
+
+    // if the values are in milliseconds
+    else if( strcmp( tval, "ms" ) == 0 )
+    {
+        // change it to display milliseconds
+        timeArgs[1] = "+%T.%3N";
+
+        // convert the time increment to microseconds
+        // 1 millisecond == 1000 microseconds
+        tinc = tinc * 1000;
+    }
+
+    // the user put in a wrong value for tval
+    else
+    {
+        // FAIL!!
+        return -1;
+    }
+
+    // run it the first time
+    // this avoids that extra wait time at the end of this command
+    if( tend > 0 )
+    {
+        dsh_fork( timeArgs, 2 );
+    }
+
+    // do the number of times specified to run
+    int i;
+    for( i = 1; i < tend; i++ )
+    {
+        // wait the incremented time
+        // usleep takes in values for microseconds
+        usleep( tinc );
+
+        // call the date command
+        dsh_fork( timeArgs, 2 );  
+    }
+
+    return 1;
+}
