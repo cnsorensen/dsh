@@ -17,7 +17,7 @@ LINK = gcc
 
 CFLAGS = -Wall -O -g
 CXXFLAGS = $(CFLAGS)
-
+LIBS = -lpthread
 #---------------------------------------
 
 # Targets
