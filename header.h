@@ -37,5 +37,10 @@ int dsh_hb( int, int, char* );
 void* p_hb( void* );
 int dsh( char* );
 int splitInstructions( char* );
+char* findRedirect( char* );
+
+// globals
+extern int REDIRECT_DIRECTION;
+extern char* REDIRECT_FILENAME;
 
 #endif

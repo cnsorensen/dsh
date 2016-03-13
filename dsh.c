@@ -1,12 +1,13 @@
 // dsh.c
 // 
-// Program 1: Diagnostic Shell
+// Program v2: Diagnostic Shell
 // CSC 456 - Operating Systems
 // South Dakota School of Mines and Technology
 // Dr. Jeff S. McGough
 //
 // Author: Christine N. Sorensen
-// 2/12/16
+// Version 1: 2/12/16
+// Version 2: 3/14/16
 //
 // Diognostic shell. A process identification program and a simple shell.
 // Purpose: To intoduce unix environment, system calls, signal, the proc
@@ -20,6 +21,7 @@
 //      < and >
 //      (( and ))
 //  Clean up some
+//  Error checking
 //
 
 #include "header.h"
@@ -66,18 +68,68 @@ int splitInstructions( char* line )
 	return return_val;
 }
 
+char* findRedirect( char* line )
+{
+    const char delimIn[2] = "<";
+	const char delimOut[2] = ">";
+	const char delimNewline[2] = "\n";
+
+	// string to hold each token 
+    char* instruction = NULL;
+
+    // move these to be globals    
+    //char* filename = NULL;
+    //int direction;
+
+    // if it's a file in
+	if( strchr( line, '<' ) != NULL )	
+	{
+        // grab the instruction
+		instruction = strtok( line, delimIn );
+
+        // get the filename
+        //REDIRECT_FILENAME = strtok( NULL, delimNewline );
+    	
+		// set the file direction
+		//REDIRECT_DIRECTION = 1;
+
+        // return the instruction to be executed
+		return instruction;
+	}
+	
+	// if it's a file out
+	else if( strchr( line, '>' ) != NULL )	
+	{
+        // grab the instruction
+        instruction = strtok( line, delimOut );
+		
+        // grab the filename
+        //REDIRECT_FILENAME = strtok( NULL, delimNewline );
+		
+        // set the filedirection
+        //REDIRECT_DIRECTION = 2;
+
+		// return the instruction to be executed
+		return instruction;	
+	}
+
+    // if there's no redirection, continue as normal
+    return line;
+}
+
 // Handles the user input
 // Param: char* line - the command the user submitted
 // Return: 1 - continue while loop. 0 - end program
 int dsh( char* line )
 {
+    // search for redirect
+    line = findRedirect( line );
+
     // delimiters
     const char delim[3] = " \t";
-    //const char redirectDelim[3] = "<>";
     //const char remoteDelim[3] = "()"; 
 
-    // string to hold each token
-	// 
+    // string to hold each token 
     char* token = NULL;
  
     // array to hold the tokens
@@ -93,6 +145,8 @@ int dsh( char* line )
         // add to list of tokens
         tokens[i] = token;
         i++;
+
+        //printf( "Token: %s\n", token );
 
         // get the next word
         token = strtok( NULL, delim );
